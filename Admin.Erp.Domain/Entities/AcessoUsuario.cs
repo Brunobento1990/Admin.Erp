@@ -11,15 +11,17 @@ public sealed class AcessoUsuario : BaseEntity
         bool bloqueado,
         Guid? tokenEsqueceuSenha,
         DateTime? expiracaoDoTokenEsqueceuSenha,
-        Guid usuarioId)
+        Guid usuarioId,
+        string email)
             : base(id, criadoEm, atualizadoEm)
     {
         Bloqueado = bloqueado;
         TokenEsqueceuSenha = tokenEsqueceuSenha;
         ExpiracaoDoTokenEsqueceuSenha = expiracaoDoTokenEsqueceuSenha;
         UsuarioId = usuarioId;
+        Email = email;
     }
-
+    public string Email { get; private set; }
     public bool Bloqueado { get; private set; }
     public Guid? TokenEsqueceuSenha { get; private set; }
     public DateTime? ExpiracaoDoTokenEsqueceuSenha { get; private set; }

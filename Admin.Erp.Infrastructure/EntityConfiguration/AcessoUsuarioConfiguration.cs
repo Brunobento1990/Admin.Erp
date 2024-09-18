@@ -8,6 +8,9 @@ internal class AcessoUsuarioConfiguration : BaseEntityConfiguration<AcessoUsuari
 {
     public override void Configure(EntityTypeBuilder<AcessoUsuario> builder)
     {
+        builder.Property(x => x.Email)
+            .IsRequired()
+            .HasMaxLength(255);
         builder.HasIndex(x => x.TokenEsqueceuSenha);
         builder.HasIndex(x => x.Bloqueado);
 

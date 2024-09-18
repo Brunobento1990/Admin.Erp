@@ -51,7 +51,8 @@ public sealed class AmbienteDesenvolvimentoService : IAmbienteDesenvolvimentoSer
             bloqueado: false,
             tokenEsqueceuSenha: null,
             expiracaoDoTokenEsqueceuSenha: null,
-            usuarioId: usuario.Id);
+            usuarioId: usuario.Id,
+            email: "dev@gmail.com");
 
         await _ambienteDesenvolvimentoRepository.AddUsuarioAsync(usuario);
     }
