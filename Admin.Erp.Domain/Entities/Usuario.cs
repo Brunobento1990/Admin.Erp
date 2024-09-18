@@ -13,12 +13,11 @@ public sealed class Usuario : BaseEntityPessoa
         string nome,
         string? cpf,
         DateTime? dataDeNascimento,
-        NpgsqlTsVector search,
         string senha)
-            : base(id, criadoEm, atualizadoEm, empresaId, nome, cpf, dataDeNascimento, search)
+            : base(id, criadoEm, atualizadoEm, empresaId, nome, cpf, dataDeNascimento)
     {
         Senha = senha;
     }
-
+    public AcessoUsuario AcessoUsuario { get; set; } = null!;
     public string Senha { get; private set; }
 }

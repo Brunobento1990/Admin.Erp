@@ -7,7 +7,7 @@ using NpgsqlTypes;
 namespace Admin.Erp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class PrimeiraMigration : Migration
+    public partial class InicialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -68,6 +68,45 @@ namespace Admin.Erp.Infrastructure.Migrations
                     table.PrimaryKey("PK_Usuarios", x => x.Id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "AcessosUsuarios",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Bloqueado = table.Column<bool>(type: "boolean", nullable: false),
+                    TokenEsqueceuSenha = table.Column<Guid>(type: "uuid", nullable: true),
+                    ExpiracaoDoTokenEsqueceuSenha = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    UsuarioId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CriadoEm = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()"),
+                    AtualizadoEm = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "now()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AcessosUsuarios", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AcessosUsuarios_Usuarios_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AcessosUsuarios_Bloqueado",
+                table: "AcessosUsuarios",
+                column: "Bloqueado");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AcessosUsuarios_TokenEsqueceuSenha",
+                table: "AcessosUsuarios",
+                column: "TokenEsqueceuSenha");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AcessosUsuarios_UsuarioId",
+                table: "AcessosUsuarios",
+                column: "UsuarioId",
+                unique: true);
+
             migrationBuilder.CreateIndex(
                 name: "IX_Menus_Ordem",
                 table: "Menus",
@@ -98,6 +137,9 @@ namespace Admin.Erp.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AcessosUsuarios");
+
             migrationBuilder.DropTable(
                 name: "Empresas");
 

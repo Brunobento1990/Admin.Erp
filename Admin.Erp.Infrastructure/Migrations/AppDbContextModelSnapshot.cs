@@ -23,6 +23,46 @@ namespace Admin.Erp.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Admin.Erp.Domain.Entities.AcessoUsuario", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("AtualizadoEm")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("now()");
+
+                    b.Property<bool>("Bloqueado")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("now()");
+
+                    b.Property<DateTime?>("ExpiracaoDoTokenEsqueceuSenha")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid?>("TokenEsqueceuSenha")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Bloqueado");
+
+                    b.HasIndex("TokenEsqueceuSenha");
+
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
+
+                    b.ToTable("AcessosUsuarios");
+                });
+
             modelBuilder.Entity("Admin.Erp.Domain.Entities.Empresa", b =>
                 {
                     b.Property<Guid>("Id")
@@ -159,6 +199,23 @@ namespace Admin.Erp.Infrastructure.Migrations
                     NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Search"), "GIN");
 
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("Admin.Erp.Domain.Entities.AcessoUsuario", b =>
+                {
+                    b.HasOne("Admin.Erp.Domain.Entities.Usuario", "Usuario")
+                        .WithOne("AcessoUsuario")
+                        .HasForeignKey("Admin.Erp.Domain.Entities.AcessoUsuario", "UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Admin.Erp.Domain.Entities.Usuario", b =>
+                {
+                    b.Navigation("AcessoUsuario")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
