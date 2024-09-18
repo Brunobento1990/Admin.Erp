@@ -4,5 +4,5 @@ namespace Admin.Erp.Application.Interfaces;
 
 public interface IMenuService
 {
-    Task<IList<MenuViewModel>> GetMenusAsync(bool isPremium);
+    Task<IList<MenuViewModel>> GetMenusAsync();
 }

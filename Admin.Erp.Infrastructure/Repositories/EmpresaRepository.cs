@@ -11,6 +11,14 @@ public sealed class EmpresaRepository : GenericRepository<Empresa>, IEmpresaRepo
     {
     }
 
+    public async Task<Empresa?> GetByIdAsync(Guid id)
+    {
+        return await _appDbContext
+            .Empresas
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public async Task<Empresa?> GetByRazaoSocialAsync(string razaoSocial)
     {
         return await _appDbContext

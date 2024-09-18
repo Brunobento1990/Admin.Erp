@@ -1,4 +1,6 @@
-﻿using Admin.Erp.Infrastructure.Context;
+﻿using Admin.Erp.Domain.Interfaces;
+using Admin.Erp.Infrastructure.Context;
+using Admin.Erp.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +12,9 @@ public static class ContextDependencyInject
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(connectionString));
+
+        services.AddScoped<IEmpresaAutenticada, EmpresaAutenticada>();
+        services.AddScoped<IUsuarioAutenticado, UsuarioAutenticado>();
 
         return services;
     }

@@ -8,15 +8,17 @@ namespace Admin.Erp.Application.Services;
 public sealed class MenuService : IMenuService
 {
     private readonly IMenuRepository _menuRepository;
+    private readonly IEmpresaAutenticada _empresaAutenticada;
 
-    public MenuService(IMenuRepository menuRepository)
+    public MenuService(IMenuRepository menuRepository, IEmpresaAutenticada empresaAutenticada)
     {
         _menuRepository = menuRepository;
+        _empresaAutenticada = empresaAutenticada;
     }
 
-    public async Task<IList<MenuViewModel>> GetMenusAsync(bool isPremium)
+    public async Task<IList<MenuViewModel>> GetMenusAsync()
     {
-        var menus = await _menuRepository.ListMenuAsync(isPremium);
+        var menus = await _menuRepository.ListMenuAsync(isPremium: _empresaAutenticada.Premium);
         return OrdenarFilhos(menus, x => !x.MenuId.HasValue);
     }
 
