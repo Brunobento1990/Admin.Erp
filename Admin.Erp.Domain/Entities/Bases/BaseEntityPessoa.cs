@@ -20,7 +20,7 @@ public abstract class BaseEntityPessoa : BaseEntityEmpresa
     }
 
     public string Nome { get; protected set; }
-    public NpgsqlTsVector Search { get; set; }
+    public NpgsqlTsVector Search { get; set; } = null!;
     public string? Cpf { get; protected set; }
     public DateTime? DataDeNascimento { get; protected set; }
 }

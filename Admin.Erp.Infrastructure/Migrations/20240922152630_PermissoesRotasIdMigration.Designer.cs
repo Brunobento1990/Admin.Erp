@@ -3,6 +3,7 @@ using System;
 using Admin.Erp.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NpgsqlTypes;
@@ -12,9 +13,11 @@ using NpgsqlTypes;
 namespace Admin.Erp.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240922152630_PermissoesRotasIdMigration")]
+    partial class PermissoesRotasIdMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,10 +167,6 @@ namespace Admin.Erp.Infrastructure.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("now()");
 
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<Guid>("MenuId")
                         .HasColumnType("uuid");
 
@@ -234,7 +233,8 @@ namespace Admin.Erp.Infrastructure.Migrations
                     b.HasIndex("MenuId")
                         .IsUnique();
 
-                    b.HasIndex("PerfilUsuarioId");
+                    b.HasIndex("PerfilUsuarioId")
+                        .IsUnique();
 
                     b.ToTable("PerfilUsuarioMenus");
                 });
@@ -360,8 +360,8 @@ namespace Admin.Erp.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Admin.Erp.Domain.Entities.PerfilUsuario", "PerfilUsuario")
-                        .WithMany("PerfilUsuarioMenu")
-                        .HasForeignKey("PerfilUsuarioId")
+                        .WithOne("PerfilUsuarioMenu")
+                        .HasForeignKey("Admin.Erp.Domain.Entities.PerfilUsuarioMenu", "PerfilUsuarioId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -410,7 +410,8 @@ namespace Admin.Erp.Infrastructure.Migrations
 
             modelBuilder.Entity("Admin.Erp.Domain.Entities.PerfilUsuario", b =>
                 {
-                    b.Navigation("PerfilUsuarioMenu");
+                    b.Navigation("PerfilUsuarioMenu")
+                        .IsRequired();
 
                     b.Navigation("Usuarios");
                 });

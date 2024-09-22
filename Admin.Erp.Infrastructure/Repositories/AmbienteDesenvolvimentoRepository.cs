@@ -20,6 +20,12 @@ public sealed class AmbienteDesenvolvimentoRepository : IAmbienteDesenvolvimento
         await _appDbContext.SaveChangesAsync();
     }
 
+    public async Task AddPerfilAsync(PerfilUsuario perfilUsuario)
+    {
+        await _appDbContext.AddAsync(perfilUsuario);
+        await _appDbContext.SaveChangesAsync();
+    }
+
     public async Task AddUsuarioAsync(Usuario usuario)
     {
         await _appDbContext.AddAsync(usuario);

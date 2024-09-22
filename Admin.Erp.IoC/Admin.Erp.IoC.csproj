@@ -9,6 +9,9 @@
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 	<ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+	</ItemGroup>
+	<ItemGroup>
 	  <ProjectReference Include="..\Admin.Erp.Application\Admin.Erp.Application.csproj" />
 	  <ProjectReference Include="..\Admin.Erp.Infrastructure\Admin.Erp.Infrastructure.csproj" />
 	</ItemGroup>

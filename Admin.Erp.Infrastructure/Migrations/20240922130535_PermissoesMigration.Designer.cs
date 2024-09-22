@@ -3,6 +3,7 @@ using System;
 using Admin.Erp.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NpgsqlTypes;
@@ -12,9 +13,11 @@ using NpgsqlTypes;
 namespace Admin.Erp.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240922130535_PermissoesMigration")]
+    partial class PermissoesMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,10 +167,6 @@ namespace Admin.Erp.Infrastructure.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("now()");
 
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<Guid>("MenuId")
                         .HasColumnType("uuid");
 
@@ -219,51 +218,21 @@ namespace Admin.Erp.Infrastructure.Migrations
 
             modelBuilder.Entity("Admin.Erp.Domain.Entities.PerfilUsuarioMenu", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("MenuId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("PerfilUsuarioId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id");
+                    b.HasKey("MenuId", "PerfilUsuarioId");
 
                     b.HasIndex("MenuId")
                         .IsUnique();
 
-                    b.HasIndex("PerfilUsuarioId");
+                    b.HasIndex("PerfilUsuarioId")
+                        .IsUnique();
 
                     b.ToTable("PerfilUsuarioMenus");
-                });
-
-            modelBuilder.Entity("Admin.Erp.Domain.Entities.PerfilUsuarioMenuRota", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("AtualizadoEm")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("CriadoEm")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("MenuRotaId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("PerfilUsuarioMenuId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MenuRotaId");
-
-                    b.HasIndex("PerfilUsuarioMenuId");
-
-                    b.ToTable("PerfilUsuarioMenuRotas");
                 });
 
             modelBuilder.Entity("Admin.Erp.Domain.Entities.Usuario", b =>
@@ -360,33 +329,14 @@ namespace Admin.Erp.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Admin.Erp.Domain.Entities.PerfilUsuario", "PerfilUsuario")
-                        .WithMany("PerfilUsuarioMenu")
-                        .HasForeignKey("PerfilUsuarioId")
+                        .WithOne("PerfilUsuarioMenu")
+                        .HasForeignKey("Admin.Erp.Domain.Entities.PerfilUsuarioMenu", "PerfilUsuarioId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Menu");
 
                     b.Navigation("PerfilUsuario");
-                });
-
-            modelBuilder.Entity("Admin.Erp.Domain.Entities.PerfilUsuarioMenuRota", b =>
-                {
-                    b.HasOne("Admin.Erp.Domain.Entities.Global.MenuRota", "MenuRota")
-                        .WithMany()
-                        .HasForeignKey("MenuRotaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Admin.Erp.Domain.Entities.PerfilUsuarioMenu", "PerfilUsuarioMenu")
-                        .WithMany("PerfilUsuarioMenuRota")
-                        .HasForeignKey("PerfilUsuarioMenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MenuRota");
-
-                    b.Navigation("PerfilUsuarioMenu");
                 });
 
             modelBuilder.Entity("Admin.Erp.Domain.Entities.Usuario", b =>
@@ -410,14 +360,10 @@ namespace Admin.Erp.Infrastructure.Migrations
 
             modelBuilder.Entity("Admin.Erp.Domain.Entities.PerfilUsuario", b =>
                 {
-                    b.Navigation("PerfilUsuarioMenu");
+                    b.Navigation("PerfilUsuarioMenu")
+                        .IsRequired();
 
                     b.Navigation("Usuarios");
-                });
-
-            modelBuilder.Entity("Admin.Erp.Domain.Entities.PerfilUsuarioMenu", b =>
-                {
-                    b.Navigation("PerfilUsuarioMenuRota");
                 });
 
             modelBuilder.Entity("Admin.Erp.Domain.Entities.Usuario", b =>

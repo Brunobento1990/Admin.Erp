@@ -8,9 +8,14 @@ internal class UsuarioConfiguration : BaseEntityPessoaConfiguration<Usuario>
 {
     public override void Configure(EntityTypeBuilder<Usuario> builder)
     {
+        base.Configure(builder);
         builder.Property(x => x.Senha)
             .IsRequired()
             .HasMaxLength(1000);
-        base.Configure(builder);
+
+        builder.HasOne(x => x.PerfilUsuario)
+            .WithMany(x => x.Usuarios)
+            .HasForeignKey(x => x.PerfilUsuarioId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

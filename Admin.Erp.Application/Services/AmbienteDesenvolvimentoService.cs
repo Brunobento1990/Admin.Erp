@@ -34,15 +34,16 @@ public sealed class AmbienteDesenvolvimentoService : IAmbienteDesenvolvimentoSer
 
         await _ambienteDesenvolvimentoRepository.AddEmpresaAsync(empresa);
 
-        var usuario = new Usuario(
-            id: Guid.CreateVersion7(),
-            criadoEm: data,
-            atualizadoEm: data,
+        var perfil = PerfilUsuario.NovoPerfil(descricao: "dev perfil", empresa.Id);
+        await _ambienteDesenvolvimentoRepository.AddPerfilAsync(perfil);
+
+        var usuario = Usuario.NovoUsuario(
             empresaId: empresa.Id,
             nome: "dev",
-            cpf: "123",
+            cpf: "00000000",
             dataDeNascimento: null,
-            senha: "$2a$10$NqR07ERdl.v32pQJJemrXu45nPMcZnY9WvaGX1winoU5vnOYVjoRG");
+            senha: "$2a$10$NqR07ERdl.v32pQJJemrXu45nPMcZnY9WvaGX1winoU5vnOYVjoRG",
+            perfilUsuarioId: perfil.Id);
 
         usuario.AcessoUsuario = new AcessoUsuario(
             id: Guid.CreateVersion7(),

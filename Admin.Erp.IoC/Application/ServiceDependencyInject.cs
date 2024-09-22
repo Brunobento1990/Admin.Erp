@@ -8,6 +8,8 @@ public static class ServiceDependencyInject
 {
     public static IServiceCollection InjectService(this IServiceCollection services)
     {
+        services.AddScoped<ILoginService, LoginService>();
+        services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IMenuService, MenuService>();
         services.AddScoped<IAmbienteDesenvolvimentoService, AmbienteDesenvolvimentoService>();
 

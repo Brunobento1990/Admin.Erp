@@ -27,4 +27,6 @@ public sealed class Menu : BaseEntity
     public int Ordem { get; private set; }
     public bool Premium { get; private set; }
     public Guid? MenuId { get; private set; }
+    public IList<MenuRota> MenuRotas { get; set; } = [];
+    public PerfilUsuarioMenu PerfilUsuarioMenu { get; set; } = null!;
 }
